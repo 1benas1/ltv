@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lankytinos Lietuvos vietos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://www.bing.com/api/maps/mapcontrol?key=ArHzmhLfc77ADtdhFFplLyLzwa8u6ZuTFRQG-hDrlV2nHU0HetRDzKWa6BqBnhyV"></script>
+
+<link type="text/css" rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+  <header>
+    <h1>Lankytinos Lietuvos vietos</h1>
+  </header>
+
+  <div id="mapContainer" class="container" style="height: 400px;"></div>
+
+ 
+  <p>Paspausk mygtuką ir gauk lankytiną Lietuvos vietą.</p>
+  <button onclick="generateInfo()">Spausk čia</button>
+  <div id="info"></div>
+
+  <script>
+    var places = [
+      { name: "Panerių tunelis", coords: "54.63127108011853, 25.18976157124398", description: "Panerių tunelis, Tai yra tunelis, kurį naudojo naciai kaip karinę sandėliavimo vietą. Dabar jis yra vartojamas kaip linų pjaustymo ir gaminimo fabrikas.", image: "https://pamirsta.lt/wp-content/uploads/paneriu-gelezinkelio-tunelis/3109317827909.jpg" },
+      { name: "Baterija „Memel Nord“", coords: "55.778296, 21.074342", description: "Baterija „Memel Nord“, Tai yra senovinė karo baterija, pastatyta šalia Kuršių marių. Ji buvo naudojama kaip gynybinė priemonė per Pirmąjį pasaulinį karą ir Antrąjį pasaulinį karą.", image: "https://www.klaipedosrajonas.lt/data/tourism_objects/large/memel_nord2.jpg" },
+      { name: "Šaltojo karo laikų slėptuvė", coords: "54.668175, 25.263566", description: "Šaltojo karo laikų slėptuvė, Tai yra slėptuvė, kuri buvo paslėpta po universiteto stadionu Vilniuje. Įėjimas į slėptuvę yra gana siauras ir į ją nukeliausite per kalną. Jos viduje yra galima pamatyti karo laikų atributiką ir nuotraukas.", image: "https://s1.15min.lt/images/photos/2020/05/29/original/saltojo-karo-laiku-sleptuve-5ed0a03f27434.jpg" },
+      { name: "Verkių dvaro parkas", coords: "54.748085607015135, 25.292862825847628", description: "Verkių dvaro parkas. Verkių dvaro sodyba yra įsikūrusi Vilniaus miesto pakraštyje, gražiame kraštovaizdyje. Stačiuose Verkių kalno šlaituose auga įspūdingi kelių šimtų metų amžiaus, apie 1,5 m kamieno skersmens ąžuolai..", image: "https://www.govilnius.lt/images/5e2f7a24437e8e20133d9a63?w=750&h=500" },
+    { name: "IX forto muziejus", coords: "54.9440082747348, 23.8680842880566", description: "IX fortas – valstybės saugomas istorijos ir architektūros paminklas.  IX forte veikia muziejus, kuriame lankytojai supažindinami su Kauno tvirtovės gynybinių įtvirtinimų karine architektūra, Pirmojo pasaulinio karo ginkluotės ir ekipuotės pavyzdžiais.", image: "https://www.lrt.lt/img/2020/05/20/656559-733172-756x425.jpg" },
+			{ name: "Lietuvos jūrų muziejus - Delfinariumas", coords: "55.71675021254412, 21.099715818067924", description: "Jūrų muziejus – vienas lankomiausių muziejų visoje Lietuvoje. 2017 m. vasarą muziejus atvėrė duris po rekonstrukcijos, o atnaujintas akvariumas lankytojams pristatytas gruodį. 15 mln. Eur kainavusi akvariumo rekonstrukcija atlikta įgyvendinant geriausių Lietuvos ir užsienio specialistų viziją.", image: "https://www.priejuros.lt/uploads/object2338/lietuvos-juru-muziejus-170363.jpg" },
+			{ name: "ilgiausia ir ekstremaliausia vasaros rogučių trasa Lietuvoje", coords: "54.599113, 24.032274", description: "Trasos ilgis – apie 600 metrų, o  didžiausias jos pasididžiavimas – posūkių žiedas, esantis net 10 metrų aukštyje. Leidžiantis rogutėmis bus galima pasiekti iki 40 km/h greitį.", image: "https://api.delfi.lt/media-api-image-cropper/v1/07299630-5ede-11ed-a9a5-1713cad318ed.jpg?noup&w=1200&h=711&fx=0.5&fy=0.25" },
+			{ name: "Maironio kelias padubysiu“", coords: "55.432814, 23.323336", description: "Naujas pažintinis takas Raseinių rajone leidžia grožėtis Dubysos regioniniu parku, upių Luknės ir Lelyko slėniais. Dubysa laikoma viena gražiausių Lietuvos upių, o būtent prie jos garsus Lietuvos poetas Maironis sėmėsi įkvėpimo.", image: "https://atraskraseinius.lt/wp-content/uploads/2021/03/DSC03236.jpg" },
+			{ name: "Lifosos fosfogipso kalnai", coords: "55.250108, 24.026885", description: "Balto fosfogipso kalnai – unikalus reiškinys ne tik Lietuvoje, bet ir Pabaltijyje. Šiuo metu fosfogipso yra susikaupę per 21 mln. tonų. Kasdien į kalnus atvežama apie 5 500 tonų fosfogipso, tad per metus jie papilnėja maždaug dviem milijonais tonų. Šiuo metu kalnų užimamas plotas apie 84 hektarai, kai kurių aukštis siekia 60 metrų.", image: "https://www.pamatyklietuvoje.lt/api/Photo/07c07915-ea69-4846-bc0b-de7d8d4f4a16/0/960/460/crop" },
+			{ name: "Vytauto Didžiojo universiteto Botanikos sodas“", coords: "54.871558, 23.910599", description: "1923 m. įsteigtas botanikos sodas kviečia pažinčiai su stulbinančiu augalijos pasauliu. Didžiausias Lietuvoje rožynas, brandus parkas su tvenkiniais ir romantiškais tilteliais, istorinė Aukštosios Fredos dvaro aplinka – puiki erdvė poilsiui ir turiningam laisvalaikiui: čia vyksta kultūros, mokslo, pramoginiai renginiai bei edukacinės veiklos, pažintinės ekskursijos.", image: "https://i.ytimg.com/vi/JMOTkXwsgQs/maxresdefault.jpg" }
+		];
+
+    var usedPlaces = [];
+
+    function generateInfo() {
+      if (usedPlaces.length === places.length) {
+        alert("All places have been visited!");
+        return;
+      }
+
+      var randomIndex;
+      var randomPlace;
+
+      do {
+        randomIndex = Math.floor(Math.random() * places.length);
+        randomPlace = places[randomIndex];
+      } while (usedPlaces.includes(randomPlace));
+
+      usedPlaces.push(randomPlace);
+
+      var infoDiv = document.getElementById("info");
+      infoDiv.innerHTML = "";
+
+      var placeBox = document.createElement("div");
+      placeBox.className = "place-box";
+      infoDiv.appendChild(placeBox);
+
+      var title = document.createElement("h2");
+      title.className = "place-title";
+      title.innerText = randomPlace.name;
+      placeBox.appendChild(title);
+
+      if (randomPlace.description) {
+        var description = document.createElement("div");
+        description.className = "place-description";
+        description.innerText = randomPlace.description;
+        placeBox.appendChild(description);
+      }
+
+      if (randomPlace.image) {
+        var image = document.createElement("img");
+        image.className = "place-image";
+        image.src = randomPlace.image;
+        image.alt = randomPlace.name;
+        placeBox.appendChild(image);
+      }
+
+      if (randomPlace.coords !== "N/A") {
+        var coordsArray = randomPlace.coords.split(",");
+        var lat = parseFloat(coordsArray[0]);
+        var lng = parseFloat(coordsArray[1]);
+
+        var map = new Microsoft.Maps.Map('#mapContainer', {
+          center: new Microsoft.Maps.Location(lat, lng),
+          zoom: 15,
+          mapTypeId: Microsoft.Maps.MapTypeId.aerial
+        });
+
+        var pushpin = new Microsoft.Maps.Pushpin(map.getCenter(), null);
+        map.entities.push(pushpin);
+      }
+    }
+  </script>
+<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
